@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import './App.css';
-import { Sidebar } from './components/Sidebar';
-import { Main } from './components/Main';
+import './App.scss';
+import { Sidebar } from './components/Sidebar/Sidebar';
+import { Main } from './components/Main/Main';
+import { Header } from './components/Header/Header';
 
 function App() {
   const [open, setopen] = useState(false);
@@ -10,8 +11,10 @@ function App() {
   }
   return (
     <>
+      <Header open={open} onClick={toggle} >
+      </Header>
       <Sidebar open={open} onClose={toggle} />
-      <Main open={open} onClick={toggle} />
+      
     </>
   );
 }
