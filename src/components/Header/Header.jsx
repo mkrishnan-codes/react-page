@@ -5,7 +5,7 @@ export const Header = (props) => {
 		<header className="top-bar">
 			<div id="main" className={props.open ? 'open' : ''}>
 				<span className="spn" onClick={props.onClick}>
-					<i class="material-icons">menu</i>
+					<i className="material-icons">menu</i>
 				</span>
 			</div>
 			{props.children}

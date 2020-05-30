@@ -5,9 +5,17 @@
 .top-bar {
     position: fixed;
     min-width: auto;
-	box-shadow: var(--bs-sm);
-	width: 100%;
-	background-color: $red;
-	height: $header-ht;
-	box-shadow: $shadow;
+    width: 100%;
+    background-color: $primary;
+    height: $header-ht;
+    box-shadow: $shadow;
+}
+
+#main {
+    padding: 16px;
+}
+
+.spn {
+    font-size: 30px;
+    cursor: pointer;
 }

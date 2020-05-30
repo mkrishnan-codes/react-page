@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-
+import './style.scss';
 export const Sidebar = (props) => {
 	return props.open && (
 		<div id="mySidenav" className="sidenav">

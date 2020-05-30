@@ -1,6 +1,6 @@
 import { Login } from "../components/Login/Login";
-import { Main } from "../components/Main/Main";
 import NotFound from "../components/404/NotFound";
+import { Home } from "../components/Home/Home";
 
 export const routes = [
 	{
@@ -10,7 +10,8 @@ export const routes = [
 	},
 	{
 		path: "/home",
-		component: Main,
+		inner: true,
+		component: Home,
 		//   routes: [
 		// 	{
 		// 	  path: "/tacos/bus",
