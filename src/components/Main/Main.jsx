@@ -1,12 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React, { useState } from 'react';
+import { Sidebar } from '../Sidebar/Sidebar';
+import { Header } from '../Header/Header';
 
 export const Main = (props) => {
-	return (
-		<div id="main" className={props.open ? 'open' : ''}>
-			<span className="spn" onClick={props.onClick}>&#9776;</span>
-		</div>
-
+	const [open, setopen] = useState(false);
+	const toggle = () => {
+		setopen(!open)
+	}
+	return (<>
+		<Header open={open} onClick={toggle} >
+		</Header>
+		<Sidebar open={open} onClose={toggle} />
+	</>
 	)
 }
 
