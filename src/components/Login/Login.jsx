@@ -2,8 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import User from '@material-ui/icons/AccountCircleOutlined';
 import Grid from '@material-ui/core/Grid';
-import { Container, CssBaseline, Button, TextField, FormControl, Card, CardContent, Box } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { Container, CssBaseline, Button, TextField, Card, Box } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
