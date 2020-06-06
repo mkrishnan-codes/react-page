@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputBase, makeStyles, fade, Popover, Typography, ClickAwayListener } from '@material-ui/core';
+import { InputBase, makeStyles, fade, Popover, ClickAwayListener, ListItem, List, ListItemText } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 const useStyles = makeStyles((theme) => ({
 	search: {
@@ -43,13 +43,17 @@ const useStyles = makeStyles((theme) => ({
 	typography: {
 		padding: theme.spacing(2),
 	},
+	listRoot:{
+		width: 220,
+		backgroundColor: theme.palette.background.paper,
+	}
 }));
 
 
 const SearchBox = () => {
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	const open = Boolean(anchorEl);
+	let open = Boolean(anchorEl);
 	const id = open ? 'srch-popover' : undefined;
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -58,6 +62,12 @@ const SearchBox = () => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+	const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+	const handleListItemClick = (event, index) => {
+		setSelectedIndex(index);
+		handleClose();
+	};
 	return (
 		<ClickAwayListener onClickAway={handleClose}>
 			<div className={classes.search}>
@@ -65,8 +75,8 @@ const SearchBox = () => {
 					<SearchIcon />
 				</div>
 				<InputBase
+					onKeyPress={handleClick}
 					placeholder="Search…"
-					onFocus={handleClick}
 
 					classes={{
 						root: classes.inputRoot,
@@ -88,7 +98,30 @@ const SearchBox = () => {
 						horizontal: 'center',
 					}}
 				>
-					<Typography className={classes.typography}>The content of the Popover.</Typography>
+					<div className={classes.listRoot}>
+
+					{/* <Typography className={classes.typography}>The content of the Popover.</Typography> */}
+					<List component="nav" aria-label="main mailbox folders">
+						<ListItem
+							button
+							selected={selectedIndex === 0}
+							onClick={(event) => handleListItemClick(event, 0)}
+						>
+							{/* <ListItemIcon>
+								<InboxIcon />
+							</ListItemIcon>*/}
+							<ListItemText primary="Inbox" /> 
+						</ListItem>
+						<ListItem
+							button
+							selected={selectedIndex === 1}
+							onClick={(event) => handleListItemClick(event, 1)}
+						>
+							<ListItemText primary="dfgdfg" /> 
+
+						</ListItem>
+					</List>
+					</div>
 				</Popover>
 			</div>
 		</ClickAwayListener>

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import User from '@material-ui/icons/AccountCircleOutlined';
 import Grid from '@material-ui/core/Grid';
 import { Container, CssBaseline, Button, TextField, Card, Box } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { SignIn } from '../../reducers/auth-reducer';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -26,6 +28,20 @@ const useStyles = makeStyles((theme) => ({
 export const Login = (props) => {
 	const classes = useStyles();
 	let history = useHistory();
+	const loggedIn = useSelector(
+		state => {
+			console.log(state);
+			
+			return state.auth.loggedIn
+		}
+	)
+	useEffect(() => {
+		if (loggedIn) {
+			history.push('/home')
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [loggedIn]);
+	const dispatch = useDispatch();
 	return (
 		<>
 			<CssBaseline />
@@ -48,7 +64,7 @@ export const Login = (props) => {
 										size="large"
 										className={classes.button}
 										startIcon={<User />}
-										onClick={() => history.push('/home')}
+										onClick={() => dispatch(SignIn())}
 									>
 										Login
       							</Button>

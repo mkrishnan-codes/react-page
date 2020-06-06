@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import Item from './Item';
 import { Grid } from '@material-ui/core';
 import InfiniteScroller from '../InfiniteScroller/InfiniteScroller';
-import { loadMore } from '../../store/reducer';
+import { loadMore } from '../../reducers/items-reducer';
 
 
 export const Items = () => {
-    // const classes = useStyles();
-    const { data: games, limit } = useSelector((state) => state);
+    const { data, limit } = useSelector((state) => state.items);
     const dispatch = useDispatch();
     const onBottom = () => {
         dispatch(loadMore())
@@ -19,9 +18,9 @@ export const Items = () => {
             hasMore={true}>
             <Grid container spacing={3} id="items-grid">
                 {
-                    games && games.map((game, index) => index < limit && <Item
+                    data && data.map((item, index) => index < limit && <Item
                         key={index}
-                        {...game} />)
+                        {...item} />)
                 }
             </Grid>
         </InfiniteScroller>
