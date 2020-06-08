@@ -59,6 +59,10 @@ const postsSlice = createSlice({
 			state.data = action.payload;
 			state.data.map((game, i) => state.data[i].s = game.title.toString().toLowerCase())
 
+		},
+		getSearchResultSuccess(state, action) {
+			console.log(state, action);
+
 		}
 
 	}
@@ -66,5 +70,6 @@ const postsSlice = createSlice({
 
 const { actions, reducer } = postsSlice;
 export const getItems = createAction('GET_ITEMS');
-export const { fillGames, loadMore, search, sort, sortOrder, getItemsSuccess } = actions
+export const searchRequest = createAction('SEARCH_REQUEST')
+export const { fillGames, loadMore, search, sort, sortOrder, getItemsSuccess, getSearchResultSuccess } = actions
 export default reducer

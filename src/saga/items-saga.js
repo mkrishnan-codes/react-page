@@ -4,8 +4,8 @@ import { GET } from '../services/api';
 
 function* doGetItems(action) {
 	try {
-		const payload = yield call(GET)
-		yield put({ type: getItemsSuccess.type, payload })
+		const { hits } = yield call(GET, { tags: 'front_page', page: 0 })
+		yield put({ type: getItemsSuccess.type, payload: hits })
 	} catch (e) {
 		console.log(e, 'Error');
 
