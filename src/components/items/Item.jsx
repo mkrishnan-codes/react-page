@@ -7,7 +7,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { searchRequest } from '../../reducers/items-reducer';
+import moment from 'moment'
 const useStyles = makeStyles({
     root: {
         minWidth: 275,
@@ -28,6 +30,7 @@ const useStyles = makeStyles({
 export const Item = (props) => {
     const classes = useStyles();
     const search = useSelector((state) => state.search);
+    const dispatch = useDispatch();
     // const title = props.title.toLowerCase();
     // const match = search ? title.search(search) > -1 : true;
     let match = true;
@@ -41,18 +44,18 @@ export const Item = (props) => {
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                         {props.platform}
                     </Typography>
-                    <Typography noWrap={true}  variant="h5" component="h2">
+                    <Typography noWrap={true} variant="h5" component="h2">
                         {props.title}
                     </Typography>
                     <Typography className={classes.pos} color="textSecondary">
-                        Score {props.score}
+                        Author - {props.author}
                     </Typography>
                     <Typography variant="body2" component="p">
-                        Year {props.release_year}
+                        Published on {moment(props.created_at).format('DD MMM YYYY')}
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small">Learn More</Button>
+                    <Button onClick={() => dispatch(searchRequest([33, 12]))} type="default" size="small">Learn More</Button>
                 </CardActions>
             </Card>
         </Grid>

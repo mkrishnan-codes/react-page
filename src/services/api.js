@@ -1,10 +1,12 @@
-const gamesUrl = 'http://starlord.hackerearth.com/gamesext';
+const gamesUrl = 'https://hn.algolia.com/api/v1/search/';
 const headers = {
-    'Content-Type': 'application/json',
-    'access-control-allow-headers': 'Origin, X-Requested-With, Content-Type, Accept',
-    'access-control-allow-methods': 'GET, POST, PUT',
-    'access-control-allow-origin': '*',
-    'server': 'cloudflare-nginx'
+    // 'Content-Type': 'application/json',
+    // 'access-control-allow-headers': 'Origin, X-Requested-With, Content-Type, Accept',
+    // 'access-control-allow-methods': 'GET, POST, PUT',
+    // 'access-control-allow-origin': '*',
+    // 'server': 'cloudflare-nginx'
+    accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+
 };
 export const GET = async (params) => {
     try {
