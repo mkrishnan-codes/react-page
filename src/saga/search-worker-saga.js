@@ -1,6 +1,6 @@
 // import { take, call, eventChannel, put } from "redux-saga"
-import { take, call, put, takeLatest} from 'redux-saga/effects';
-import { searchRequest } from '../reducers/items-reducer'
+import { take, call, put, takeLatest, select } from 'redux-saga/effects';
+import { searchRequest, getSearchResultSuccess } from '../reducers/items-reducer'
 import { eventChannel } from 'redux-saga';
 const wsUrl = './workers/search-worker.js'
 
@@ -19,22 +19,25 @@ function initWebsocket() {
 		ws.onmessage = (e) => {
 			let msg = null
 			try {
-				console.error(e.data)
-				msg = JSON.parse(e.data)
-
+				// console.error(e.data)
+				// msg = JSON.parse(e.data)
+				msg = e.data;
 			} catch (e) {
 				console.error(`Error parsing : ${e.data}`)
 			}
 			if (msg) {
-				const { payload: book } = msg
-				const channel = msg.channel
-				switch (channel) {
-					case 'ADD_BOOK':
-						return emitter({ type: 'ADD_BOOK', book })
-					case 'REMOVE_BOOK':
-						return emitter({ type: 'REMOVE_BOOK', book })
-					default:
-					// nothing to do
+				const { payload: success } = msg
+				// const channel = msg.channel
+				// switch (channel) {
+				// 	case 'ADD_BOOK':
+				// 		return emitter({ type: 'ADD_BOOK', book })
+				// 	case 'REMOVE_BOOK':
+				// 		return emitter({ type: 'REMOVE_BOOK', book })
+				// 	default:
+				// 	// nothing to do
+				// }
+				if (success) {
+					return emitter({ type: getSearchResultSuccess.type, success })
 				}
 			}
 		}
@@ -47,7 +50,9 @@ function initWebsocket() {
 }
 function* doSendToWorker(action) {
 	try {
-		const res = yield call(post, action.payload)
+		const array = yield select(state => state.items.data);
+		const payload = { filter: action.payload, array }
+		const res = yield call(post, payload)
 		yield put({ type: 'POSTED', res })
 	} catch (e) {
 		console.log(e, 'Error');
