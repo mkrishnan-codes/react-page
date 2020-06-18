@@ -25,9 +25,11 @@ export const Mock = (props) => {
 	return (
 		<div>
 			<h1>
-				{`Delay is ${delay} seconds`}
+				{`Current delay is ${delay} seconds`}
 			</h1>
-
+<h2>
+	Set custom delay in localstorage<pre>localStorage.setItem('DELAY',50)</pre>
+</h2>
 			<table className="order-hist-submitted paleBlueRows">
 				<tr>
 					<th width="20"><strong>&nbsp;</strong></th>
