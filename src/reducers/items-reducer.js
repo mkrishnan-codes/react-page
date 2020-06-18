@@ -31,22 +31,6 @@ const postsSlice = createSlice({
 		},
 		search(state, action) {
 			state.search = action.payload;
-			if (action.payload > 2) {
-				state.pageSize = state.data.length
-				// let iter = 0;
-				// state.data.map((game, i) => {
-				//     if (iter < 10) {
-				//         const flag = game.s && game.s.search();
-				//         if (flag) {
-				//             iter++;
-				//         }
-				//         return game.s && game.s.search(crit) > -1
-				//     } else {
-				//         return false
-				//     }
-				// })
-				// state.data = state.wholedata.filter((game) => game.s.search(crit) > -1)
-			}
 		},
 		sort(state, action) {
 			sortData(state, action.payload)
@@ -62,7 +46,7 @@ const postsSlice = createSlice({
 		},
 		getSearchResultSuccess(state, action) {
 			console.log(state, action);
-
+			state.suggest = action.payload;
 		}
 
 	}

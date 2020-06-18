@@ -1,6 +1,9 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from 'react';
 import { InputBase, makeStyles, fade, Popover, ClickAwayListener, ListItem, List, ListItemText } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import { useDispatch, useSelector } from 'react-redux';
+import { search, searchRequest } from '../../reducers/items-reducer';
 const useStyles = makeStyles((theme) => ({
 	search: {
 		position: 'relative',
@@ -43,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 	typography: {
 		padding: theme.spacing(2),
 	},
-	listRoot:{
+	listRoot: {
 		width: 220,
 		backgroundColor: theme.palette.background.paper,
 	}
@@ -56,18 +59,28 @@ const SearchBox = () => {
 	let open = Boolean(anchorEl);
 	const id = open ? 'srch-popover' : undefined;
 	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
+		if (!anchorEl) {
+			setAnchorEl(event.currentTarget);
+		}
+		dispatch(search(event.target.value))
 	};
 
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
 	const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+	const dispatch = useDispatch();
+	const searchTxt = useSelector(state => state.items.search)
+	const suggest = useSelector(state => state.items.suggest)
 	const handleListItemClick = (event, index) => {
 		setSelectedIndex(index);
 		handleClose();
 	};
+	useEffect(() => {
+		if (searchTxt) {
+			dispatch(searchRequest(searchTxt))
+		}
+	}, [searchTxt]);
 	return (
 		<ClickAwayListener onClickAway={handleClose}>
 			<div className={classes.search}>
@@ -75,9 +88,10 @@ const SearchBox = () => {
 					<SearchIcon />
 				</div>
 				<InputBase
-					onKeyPress={handleClick}
 					placeholder="Search…"
-
+					onChange={handleClick}
+					value={searchTxt}
+					autoFocus={true}
 					classes={{
 						root: classes.inputRoot,
 						input: classes.inputInput,
@@ -86,6 +100,8 @@ const SearchBox = () => {
 				/>
 				<Popover
 					id={id}
+					disableAutoFocus
+					disableEnforceFocus
 					open={open}
 					anchorEl={anchorEl}
 					onClose={handleClose}
@@ -100,27 +116,30 @@ const SearchBox = () => {
 				>
 					<div className={classes.listRoot}>
 
-					{/* <Typography className={classes.typography}>The content of the Popover.</Typography> */}
-					<List component="nav" aria-label="main mailbox folders">
-						<ListItem
-							button
-							selected={selectedIndex === 0}
-							onClick={(event) => handleListItemClick(event, 0)}
-						>
-							{/* <ListItemIcon>
-								<InboxIcon />
-							</ListItemIcon>*/}
-							<ListItemText primary="Inbox" /> 
-						</ListItem>
-						<ListItem
-							button
-							selected={selectedIndex === 1}
-							onClick={(event) => handleListItemClick(event, 1)}
-						>
-							<ListItemText primary="dfgdfg" /> 
+						{/* <Typography className={classes.typography}>The content of the Popover.</Typography> */}
+						<List component="nav" aria-label="main mailbox folders">
+							{/* <ListItem
+								onClick={(event) => handleListItemClick(event, 0)}
+							>
+								
+								<ListItemText primary="Inbox" />
+							</ListItem>
+							<ListItem
+								onClick={(event) => handleListItemClick(event, 1)}
+							>
+								<ListItemText primary="dfgdfg" />
 
-						</ListItem>
-					</List>
+							</ListItem> */}
+							{
+								suggest.map(
+									(sg) => (<ListItem
+										onClick={(event) => handleListItemClick(event, 0)}
+									>
+										<ListItemText primary={sg.title} />
+									</ListItem>)
+								)
+							}
+						</List>
 					</div>
 				</Popover>
 			</div>

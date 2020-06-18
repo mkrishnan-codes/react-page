@@ -1,75 +1,73 @@
-import { take, actionChannel, call, fork, put, apply } from 'redux-saga/effects'
+// import { take, call, eventChannel, put } from "redux-saga"
+import { take, call, put, takeLatest, select } from 'redux-saga/effects';
 import { searchRequest, getSearchResultSuccess } from '../reducers/items-reducer'
 import { eventChannel } from 'redux-saga';
-let searchWorker;
-function* handleRequest(payload) {
-	yield call(searchWorker.postMessage(payload))
-}
-// this function creates an event channel from a given socket
-// Setup subscription to incoming `ping` events
-function createSocketChannel(searchWorker) {
-	// `eventChannel` takes a subscriber function
-	// the subscriber function takes an `emit` argument to put messages onto the channel
-	return eventChannel(emit => {
+const wsUrl = './workers/search-worker.js'
 
-		const pingHandler = (event) => {
-			// puts event payload into the channel
-			// this allows a Saga to take this payload from the returned channel
-			console.log(event.payload, 'Recieved')
-			emit(event.payload)
+const ws = new Worker(wsUrl)
+
+
+export const post = (msg) => ws.postMessage(msg);
+
+
+function initWebsocket() {
+	return eventChannel(emitter => {
+		ws.onerror = (error) => {
+			console.log('Worker error ' + error)
+			console.dir(error)
 		}
-
-		const errorHandler = (errorEvent) => {
-			// create an Error object and put it into the channel
-			emit(new Error(errorEvent.reason))
+		ws.onmessage = (e) => {
+			let msg = null
+			try {
+				// console.error(e.data)
+				// msg = JSON.parse(e.data)
+				msg = e.data;
+			} catch (e) {
+				console.error(`Error parsing : ${e.data}`)
+			}
+			if (msg) {
+				const { payload: success } = msg
+				// const channel = msg.channel
+				// switch (channel) {
+				// 	case 'ADD_BOOK':
+				// 		return emitter({ type: 'ADD_BOOK', book })
+				// 	case 'REMOVE_BOOK':
+				// 		return emitter({ type: 'REMOVE_BOOK', book })
+				// 	default:
+				// 	// nothing to do
+				// }
+				if (success) {
+					return emitter({ type: getSearchResultSuccess.type, success })
+				}
+			}
 		}
-
-		// setup the subscription
-		searchWorker.onmessage = pingHandler;
-		searchWorker.onerror = errorHandler;
-
-		// the subscriber must return an unsubscribe function
-		// this will be invoked when the saga calls `channel.close` method
-		const unsubscribe = () => {
-			searchWorker.terminate();
+		// unsubscribe function
+		return () => {
+			ws.terminate()
+			console.log('Socket off')
 		}
-
-		return unsubscribe
 	})
 }
-// reply with a `pong` message by invoking `socket.emit('pong')`
-function* pong(socket) {
-	yield apply(socket, socket.emit, ['pong']) // call `emit` as a method with `socket` as context
-}
-const createConnection = () => {
-	searchWorker = new Worker('../workers/search-worker.js');
-	return searchWorker;
-}
-export function* watchWorkerMessages() {
-	const socket = yield call(createConnection)
-	const socketChannel = yield call(createSocketChannel, socket)
+function* doSendToWorker(action) {
+	try {
+		const array = yield select(state => state.items.data);
+		const payload = { filter: action.payload, array }
+		const res = yield call(post, payload)
+		yield put({ type: 'POSTED', res })
+	} catch (e) {
+		console.log(e, 'Error');
 
-	while (true) {
-		try {
-			// An error from socketChannel will cause the saga jump to the catch block
-			const payload = yield take(socketChannel)
-			yield put({ type: getSearchResultSuccess.type, payload })
-			yield fork(pong, socket)
-		} catch (err) {
-			console.error('socket error:', err)
-			// socketChannel is still open in catch block
-			// if we want end the socketChannel, we need close it explicitly
-			// socketChannel.close()
-		}
+		yield put({ type: 'ERROR', error: e.json })
 	}
 }
-export function* watchActionMessage() {
-	// 1- Create a channel for request actions
-	const requestChan = yield actionChannel(searchRequest.type)
+
+export function* workerRecieverSaga() {
+	const channel = yield call(initWebsocket)
 	while (true) {
-		// 2- take from the channel
-		const { payload } = yield take(requestChan)
-		// 3- Note that we're using a blocking call
-		yield call(handleRequest, payload)
+		const action = yield take(channel)
+		yield put(action)
 	}
+}
+export function* workerSenderSaga() {
+	yield takeLatest(searchRequest.type, doSendToWorker);
 }
