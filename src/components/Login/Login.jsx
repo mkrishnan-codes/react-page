@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import User from '@material-ui/icons/AccountCircleOutlined';
 import Grid from '@material-ui/core/Grid';
 import { Container, CssBaseline, Button, TextField, Card, Box } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { SignIn } from '../../reducers/auth-reducer';
 
@@ -31,7 +31,7 @@ export const Login = (props) => {
 	const loggedIn = useSelector(
 		state => {
 			console.log(state);
-			
+
 			return state.auth.loggedIn
 		}
 	)
@@ -72,7 +72,13 @@ export const Login = (props) => {
 							</Box>
 
 						</Card>
+						<div>
+							<Link to="/mock-downloader">
+								Mock
+						</Link>
+						</div>
 					</Grid>
+
 				</Grid>
 			</Container>
 		</>
