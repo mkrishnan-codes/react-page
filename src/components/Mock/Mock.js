@@ -60,7 +60,7 @@ export const Mock = (props) => {
 						{status}
 					</td>
 					<td className="tiny" id="download-cell-A3KUK3EBU11MEZ">
-						{status==='Complete' && <a href="/rep.csv">Download</a>}
+						{status==='Complete' && <a href="https://drive.google.com/u/0/uc?id=1K6ql1aQYNVX8kteddzvW3IxzGgfg2AW8&export=download">Download</a>}
 					</td>
 				</tr>
 				<tr className="">
@@ -82,7 +82,7 @@ export const Mock = (props) => {
 						Complete
 					</td>
 					<td className="tiny" id="download-cell-A3KUK3EBU11MEZ">
-						 <a href="/rep.csv">Download</a>
+						 <a href="https://drive.google.com/u/0/uc?id=1K6ql1aQYNVX8kteddzvW3IxzGgfg2AW8&export=download">Download</a>
 					</td>
 				</tr>
 				<tr className="">
@@ -104,7 +104,7 @@ export const Mock = (props) => {
 						Complete
 					</td>
 					<td className="tiny" id="download-cell-A3KUK3EBU11MEZ">
-						<a href="/rep.csv">Download</a>
+						<a href="https://drive.google.com/u/0/uc?id=1K6ql1aQYNVX8kteddzvW3IxzGgfg2AW8&export=download">Download</a>
 					</td>
 				</tr>
 			</table>
