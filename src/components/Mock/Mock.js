@@ -3,19 +3,20 @@ import './style.scss';
 export const Mock = (props) => {
 	const [status, setStatus] = useState('Processing');
 	const [delay] = useState(parseInt(localStorage.getItem('DELAY') || 10));
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setStatus('Complete')
-		}, delay * 1000);
-		return () => clearTimeout(timer);
-	}, [delay]);
+	// useEffect(() => {
+	// 	const timer = setTimeout(() => {
+	// 		setStatus('Complete')
+	// 	}, delay * 1000);
+	// 	return () => clearTimeout(timer);
+	// }, [delay]);
 	useEffect(() => {
 		let inc = 0;
 		let timer;
 		timer = setInterval(() => {
-			if (inc < 98) {
+			if (inc < 100) {
 				setStatus(`Processing(${inc++})`)
 			} else {
+				setStatus('Complete')
 				clearTimeout(timer);
 			}
 		}, delay*10);
@@ -28,7 +29,7 @@ export const Mock = (props) => {
 				{`Current delay is ${delay} seconds`}
 			</h1>
 <h2>
-	Set custom delay in localstorage<pre>localStorage.setItem('DELAY',50)</pre>
+	Set custom delay seconds in localstorage<pre>localStorage.setItem('DELAY',50)</pre>
 </h2>
 			<table className="order-hist-submitted paleBlueRows">
 				<tr>
