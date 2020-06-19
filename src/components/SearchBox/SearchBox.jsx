@@ -68,12 +68,12 @@ const SearchBox = () => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-	const [selectedIndex, setSelectedIndex] = React.useState(1);
+	// const [selectedIndex, setSelectedIndex] = React.useState(1);
 	const dispatch = useDispatch();
 	const searchTxt = useSelector(state => state.items.search)
 	const suggest = useSelector(state => state.items.suggest)
 	const handleListItemClick = (event, index) => {
-		setSelectedIndex(index);
+		// setSelectedIndex(index);
 		handleClose();
 	};
 	useEffect(() => {

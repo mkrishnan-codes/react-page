@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { Items } from '../items/Items';
-import { useSelector, useDispatch } from 'react-redux';
-import { GET } from '../../services/api';
-import { fillGames, loadMore, sort, getItems } from '../../reducers/items-reducer';
+import { useDispatch } from 'react-redux';
+import { getItems } from '../../reducers/items-reducer';
 
 export const Home = () => {
     const dispatch = useDispatch();
-    const field = useSelector((state) => state.sortField);
+    // const field = useSelector((state) => state.sortField);
     // const searchTxt = useSelector((state) => state.search);
     // useEffect(() => {
     //     async function initDataCall() {
