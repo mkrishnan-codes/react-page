@@ -1,4 +1,4 @@
-const gamesUrl = '/deployed-api/search/';
+const gamesUrl = '/api/v1/';
 const headers = {
     // 'Content-Type': 'application/json',
     // 'access-control-allow-headers': 'Origin, X-Requested-With, Content-Type, Accept',
