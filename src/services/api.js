@@ -1,4 +1,4 @@
-const gamesUrl = 'https://hn.algolia.com/api/v1/search/';
+const gamesUrl = '/deployed-api/search/';
 const headers = {
     // 'Content-Type': 'application/json',
     // 'access-control-allow-headers': 'Origin, X-Requested-With, Content-Type, Accept',
